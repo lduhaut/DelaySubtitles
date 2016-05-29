@@ -4,6 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * Classe écrite pour pouvoir rediffuser une vidéo, pour laquelle les sous-titres étaient (beaucoup) décalés.
+ * + besoin de découper la vidéo en plusieurs extraits à diffuser séparément.
+ * 
+ * @author Loïc
+ *
+ */
 public class DelaySubs {
 
 	public static void main(String[] args) {
@@ -41,7 +48,7 @@ public class DelaySubs {
 		int delayInSec = 0 - (3600 + 59 * 60 + 40);
 		
 		
-		File fileSub = new File("C:\\Users\\Loïc\\Desktop\\DownSub.com_Google_I-O_2016_Keynote.srt");
+		File fileSub = new File("C:\\Users\\Me\\Desktop\\sous-titre-original.srt");
 
 		if (fileSub.exists()) {
 
@@ -58,13 +65,14 @@ public class DelaySubs {
 					if (line.trim().equals(Integer.toString(subId + 1))) {
 						String temps = sc.nextLine();
 						String[] tempsArr = temps.replace(" --> ", ":").split(":");
-						// System.out.println(temps);
 						++subId;
 
 						String debut = delay(tempsArr[0], tempsArr[1], tempsArr[2], delayInSec);
+						// Suppression des sous-titres qui commencent avant le début de la partie à extraire
 						if (null != debut) {
 							started = true;
 
+							// Renumérotation de chaque sous-titre si décalage.
 							System.out.println(idWritten++);
 							System.out.println(
 									debut + " --> " + delay(tempsArr[3], tempsArr[4], tempsArr[5], delayInSec));
